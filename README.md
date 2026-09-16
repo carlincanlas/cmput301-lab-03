@@ -8,10 +8,10 @@
 ## References and Resources
 
 List any resources used here, or simply put `N/A` if not applicable.
+https://kotlinlang.org/docs/lambdas.html#function-types  
+https://developer.android.com/develop/ui/compose/modifiers  
+https://developer.android.com/develop/ui/compose/components/button  
 
-## Verbal Collaboration
 
-| Student Name | CCID      |
-| ------------ | --------- |
-| `student`    | `student` |
-| `<Add more>` | `<CCID>`  |
+## Verbal Collaboration 
+N/A
