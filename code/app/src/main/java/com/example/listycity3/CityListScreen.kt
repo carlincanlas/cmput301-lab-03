@@ -22,6 +22,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.foundation.layout.fillMaxSize
+
 
 @Composable
 fun CityListScreen(
@@ -32,48 +36,69 @@ fun CityListScreen(
     var newCityName by remember { mutableStateOf("") }
     var newProvinceName by remember { mutableStateOf("") }
 
-    Column(modifier = modifier) {
+    // showAddCityFields controls whether the city and province input fields are visible
+    var showAddCityFields by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier.fillMaxSize()) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
         ) {
-            OutlinedTextField(
-                value = newCityName,
-                onValueChange = { newCityName = it },
-                label = { Text("City") },
-                modifier = Modifier.weight(1f)
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            OutlinedTextField(
-                value = newProvinceName,
-                onValueChange = { newProvinceName = it },
-                label = { Text("Province") },
-                modifier = Modifier.weight(1f)
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-            Button(
-                modifier = Modifier.padding(vertical = 12.dp),
+            FloatingActionButton(
+                modifier = Modifier.padding(16.dp),
                 onClick = {
-                    if (newCityName.isNotBlank() && newProvinceName.isNotBlank()) {
-                        onAddCity(
-                            City(
-                                name = newCityName,
-                                province = newProvinceName
-                            )
-                        )
-                        newCityName = ""
-                        newProvinceName = ""
-                    }
+                    showAddCityFields = !showAddCityFields
                 }
             ) {
-                Text("Add City")
+                Text("+")
             }
         }
-        LazyColumn {
+
+        if (showAddCityFields) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                OutlinedTextField(
+                    value = newCityName,
+                    onValueChange = { newCityName = it },
+                    label = { Text("City") },
+                    modifier = Modifier.weight(1f)
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                OutlinedTextField(
+                    value = newProvinceName,
+                    onValueChange = { newProvinceName = it },
+                    label = { Text("Province") },
+                    modifier = Modifier.weight(1f)
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(
+                    modifier = Modifier.padding(vertical = 12.dp),
+                    onClick = {
+                        if (newCityName.isNotBlank() && newProvinceName.isNotBlank()) {
+                            onAddCity(
+                                City(
+                                    name = newCityName,
+                                    province = newProvinceName
+                                )
+                            )
+                            newCityName = ""
+                            newProvinceName = ""
+                            showAddCityFields = false
+                        }
+                    }
+                ) {
+                    Text("Add City")
+                }
+            }
+        }
+
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
             itemsIndexed(cities) { index, city ->
                 CityRow(city = city)
                 if (index < cities.lastIndex) {
